@@ -16,7 +16,7 @@ const LoginPage = ()=>{
                   <Link to='/app'>
                       <i className={`fas fa-angle-left fa-2x text-dark`}></i>
                   </Link>
-                  <Link to='/app/signup' className={`btn btn-outline-light text-dark`}>LOGIN</Link>
+                  <Link to='/app/signup' className={`btn btn-outline-light text-dark`}>SIGNUP</Link>
               </div>
 
               <div className={`w-100 mt-5 px-5 text-center`}>
