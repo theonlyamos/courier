@@ -13,7 +13,6 @@ const FlexBox = ({direction, justify, align, children}) => {
         else if (justify === 'around')
             classes += ` justify-content-around`
     }
-    console.log(classes)
     return (
         <div className={classes}>
             {children}
