@@ -28,13 +28,13 @@ const LoginPage = ()=>{
               <form name="login" netlify>
                   <div className={`row align-items-center justify-content-center`}>
                       <div className={`col-sm-9 col-md-3 col-lg-4`}>
-                          <div className={`input-group mt-3 border border-2 border-dark rounded-pill`}>
+                          <div className={`input-group mt-3 border border-2 border-dark rounded`}>
                               <input type='email' name='email' className={`form-control border-0`} placeholder='Enter Email Address' required/> 
                               <span className={`input-group-text bg-white`}>
                                   <i className={`fas fa-envelope`}></i>
                               </span>
                           </div>
-                          <div className={`input-group mt-3 border border-2 border-dark rounded-pill`}>
+                          <div className={`input-group mt-3 border border-2 border-dark rounded`}>
                               <input type='password' name='password' className={`form-control border-0`} placeholder='Enter Password' required/> 
                               <span className={`input-group-text bg-white`}>
                                   <i className={`fas fa-lock`}></i>
