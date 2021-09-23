@@ -1,10 +1,6 @@
 import * as React from "react"
 import { Link } from 'gatsby'
 import Overlay from '../overlay'
-import ContainerBox from '../../components/container'
-import FlexBox from '../../components/flexbox'
-import InputBox from '../../components/inputbox'
-
 import { btn, btnDark, btnLg } from '../styles.module.css'
 
 const LoginPage = ()=>{
