@@ -20,7 +20,7 @@ const LoginPage = ()=>{
                   <div className={`h5 mt-2`}></div>
 
               </div>
-              <form name="signup" netlify>
+              <form name="signup" method='POST' netlify>
                   <div className={`row align-items-center justify-content-center`}>
                       <div className={`col-sm-9 col-md-3 col-lg-4`}>
                           <div className={`input-group mt-3 border border-2 border-dark rounded`}>

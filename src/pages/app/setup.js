@@ -14,7 +14,7 @@ const SetupPage = ()=>{
                   </Link>
               </div>
 
-              <form name="addTruck" netlify>
+              <form name="addTruck"  method='POST' netlify>
                   <div className={`row align-items-center justify-content-center`}>
                       <div className={`col-sm-9 col-md-3 col-lg-4`}>
                           <div className={`form-group mt-3`}>
