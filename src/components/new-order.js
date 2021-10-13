@@ -149,9 +149,6 @@ const NewOrder = () => {
 
     return (
     <>
-        <Helmet>
-            <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBUCHsKcPB42kheop8QdzlUPUSl43LJbVM&libraries=places"></script>
-        </Helmet>
         <div className="modal fade" id="cargoSizeModal" tabIndex="-1" aria-labelledby="cargoSizeModalLabel" aria-hidden="true">
             <div className="modal-dialog modal-dialog-centered">
                 <div className="modal-content">
@@ -259,7 +256,8 @@ const NewOrder = () => {
                         </div>
                         <div className="form-group my-3">
                             <label className="text-secondary">Enter destination address</label>
-                            <GooglePlacesAutocomplete
+                            {isLoaded && (
+                                <GooglePlacesAutocomplete
                                 placeholder="Enter Destination Address"
                                 apiKey={process.env.GOOGLE_MAPS_API_KEY}
                                 selectProps={{
@@ -267,7 +265,8 @@ const NewOrder = () => {
                                     onChange: autocompleteSelect,
                                 }}
                                 
-                            />
+                                />
+                            )}
                         </div>
                         {/*
                         <div className={`input-group mt-3 border rounded`}>
