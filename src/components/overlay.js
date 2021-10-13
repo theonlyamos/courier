@@ -1,5 +1,5 @@
 import * as React from "react"
-import { overlay } from './styles.module.css'
+import { overlay } from '../pages/styles.module.css'
 
 const Overlay = ()=>{
   return (

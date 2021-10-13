@@ -1,14 +1,19 @@
-import * as React from "react"
-import { Link } from 'gatsby'
-import Overlay from './overlay'
+import React from "react"
+import { Link, navigate } from 'gatsby'
+
+import Overlay from '../components/overlay'
 import ContainerBox from '../components/container'
 import FlexBox from '../components/flexbox'
 import InputBox from '../components/inputbox'
 import { btn, btnLg, btnPrimary, btnDark } from './styles.module.css'
 
 const HomePage = ()=>{
+
+    navigate('/app')
+      
   return (
       <>
+          {/**
           <Overlay></Overlay>
           <div className={`w-100 d-flex justify-content-end p-3`}>
               <Link to="/app/login" className={`btn btn-primary ${btn} ${btnPrimary}`}>LOGIN</Link>
@@ -31,6 +36,7 @@ const HomePage = ()=>{
                   </div>
               </FlexBox>
           </ContainerBox>
+          */}
       </>
   )
 }
