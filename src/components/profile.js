@@ -73,7 +73,7 @@ const Profile = ({location}) => {
                         <Link to="/app/orders/new" className={`btn btn-primary ${rounded10} text-white font-monospace ms-3`}>New Order</Link>
                     </div>
                     <div className="row py-4 border-bottom">
-                        <div className="col-6 col-md-4 col-lg-3">
+                        <div className="col-6 col-md-4">
                             <div className={`card ${rounded10} border-2`}>
                                 <div className="card-body d-flex flex-column align-items-center justify-center">
                                     <div className="h3 fw-bold">{ordersCount}</div>
@@ -81,7 +81,7 @@ const Profile = ({location}) => {
                                 </div>
                             </div>
                         </div>
-                        <div className="col-6 col-md-4 col-lg-3">
+                        <div className="col-6 col-md-4">
                             <div className={`card ${rounded10} border-2`}>
                                 <div className="card-body d-flex flex-column align-items-center justify-center">
                                     <div className="h3 fw-bold">0</div>

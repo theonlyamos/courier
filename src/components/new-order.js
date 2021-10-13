@@ -37,6 +37,8 @@ const NewOrder = () => {
         }
         setUser(getUser().toJSON())
         Geocode.setApiKey(process.env.GOOGLE_MAPS_API_KEY)
+        console.log('google api:',process.env.GOOGLE_MAPS_API_KEY)
+        console.log('opencage_api:', process.env.OPENCAGE_API_KEY)
     }, [])
     /*
     const { ref, autocompleteRef } = usePlacesWidget({
