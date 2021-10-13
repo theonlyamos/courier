@@ -15,7 +15,7 @@ import {useJsApiLoader} from '@react-google-maps/api'
 const NewOrder = () => {
     const {isLoaded} = useJsApiLoader({
         id: 'google-map-script',
-        googleMapsApiKey: process.env.GOOGLE_MAPS_API_KEY,
+        googleMapsApiKey: "AIzaSyBUCHsKcPB42kheop8QdzlUPUSl43LJbVM",
         libraries: ["places"]
     });
 
@@ -37,8 +37,6 @@ const NewOrder = () => {
         }
         setUser(getUser().toJSON())
         Geocode.setApiKey(process.env.GOOGLE_MAPS_API_KEY)
-        console.log('google api:',process.env.GOOGLE_MAPS_API_KEY)
-        console.log('opencage_api:', process.env.OPENCAGE_API_KEY)
     }, [])
     /*
     const { ref, autocompleteRef } = usePlacesWidget({
@@ -261,7 +259,7 @@ const NewOrder = () => {
                             {isLoaded && (
                                 <GooglePlacesAutocomplete
                                 placeholder="Enter Destination Address"
-                                apiKey={process.env.GOOGLE_MAPS_API_KEY}
+                                apiKey={`AIzaSyBUCHsKcPB42kheop8QdzlUPUSl43LJbVM`}
                                 selectProps={{
                                     destination,
                                     onChange: autocompleteSelect,
