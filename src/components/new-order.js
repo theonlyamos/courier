@@ -15,7 +15,7 @@ import {useJsApiLoader} from '@react-google-maps/api'
 const NewOrder = () => {
     const {isLoaded} = useJsApiLoader({
         id: 'google-map-script',
-        googleMapsApiKey: process.env.GATSBY_GOOGLE_MAPS_API_KEY,
+        googleMapsApiKey: "AIzaSyBUCHsKcPB42kheop8QdzlUPUSl43LJbVM",
         libraries: ["places"]
     });
 
@@ -36,7 +36,7 @@ const NewOrder = () => {
             return null
         }
         setUser(getUser().toJSON())
-        Geocode.setApiKey(process.env.GATSBY_GOOGLE_MAPS_API_KEY)
+        Geocode.setApiKey("AIzaSyBUCHsKcPB42kheop8QdzlUPUSl43LJbVM")
     }, [])
     /*
     const { ref, autocompleteRef } = usePlacesWidget({
@@ -71,7 +71,7 @@ const NewOrder = () => {
             try {
                 navigator.geolocation.getCurrentPosition(async function(position) {
                     if (position){
-                        const data = await opencage.geocode({q: `${position.coords.latitude}, ${position.coords.longitude}`})
+                        const data = await opencage.geocode({q: `${position.coords.latitude}, ${position.coords.longitude}`, key: "5e2fa48c562740639267690f8fb73597"})
                         if (data.results.length > 0){
                             let place = data.results[0]
                             console.log(place)
@@ -104,7 +104,8 @@ const NewOrder = () => {
 
     const autocompleteSelect = async(e)=>{
         setDestination(e.label)
-        const data = await opencage.geocode({q: e.label})
+
+        const data = await opencage.geocode({q: e.label, key: "5e2fa48c562740639267690f8fb73597"})
         if (data.results.length > 0){
             let place = data.results[0]
             console.log(place)
@@ -258,7 +259,7 @@ const NewOrder = () => {
                             {isLoaded && (
                                 <GooglePlacesAutocomplete
                                 placeholder="Enter Destination Address"
-                                apiKey={process.env.GATSBY_GOOGLE_MAPS_API_KEY}
+                                apiKey={`AIzaSyBUCHsKcPB42kheop8QdzlUPUSl43LJbVM`}
                                 selectProps={{
                                     destination,
                                     onChange: autocompleteSelect,
