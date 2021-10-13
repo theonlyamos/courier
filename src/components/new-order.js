@@ -15,7 +15,7 @@ import {useJsApiLoader} from '@react-google-maps/api'
 const NewOrder = () => {
     const {isLoaded} = useJsApiLoader({
         id: 'google-map-script',
-        googleMapsApiKey: "AIzaSyBUCHsKcPB42kheop8QdzlUPUSl43LJbVM",
+        googleMapsApiKey: process.env.GATSBY_GOOGLE_MAPS_API_KEY,
         libraries: ["places"]
     });
 
@@ -36,7 +36,7 @@ const NewOrder = () => {
             return null
         }
         setUser(getUser().toJSON())
-        Geocode.setApiKey(process.env.GOOGLE_MAPS_API_KEY)
+        Geocode.setApiKey(process.env.GATSBY_GOOGLE_MAPS_API_KEY)
     }, [])
     /*
     const { ref, autocompleteRef } = usePlacesWidget({
@@ -104,7 +104,6 @@ const NewOrder = () => {
 
     const autocompleteSelect = async(e)=>{
         setDestination(e.label)
-
         const data = await opencage.geocode({q: e.label})
         if (data.results.length > 0){
             let place = data.results[0]
@@ -259,7 +258,7 @@ const NewOrder = () => {
                             {isLoaded && (
                                 <GooglePlacesAutocomplete
                                 placeholder="Enter Destination Address"
-                                apiKey={`AIzaSyBUCHsKcPB42kheop8QdzlUPUSl43LJbVM`}
+                                apiKey={process.env.GATSBY_GOOGLE_MAPS_API_KEY}
                                 selectProps={{
                                     destination,
                                     onChange: autocompleteSelect,
