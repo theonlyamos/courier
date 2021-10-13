@@ -9,6 +9,7 @@ import * as opencage from 'opencage-api-client'
 //import { usePlacesWidget } from "react-google-autocomplete";
 import Geocode from 'react-geocode'
 import GooglePlacesAutocomplete from 'react-google-places-autocomplete'
+import { Helmet } from 'react-helmet'
 
 const NewOrder = () => {
     const [user, setUser] = useState(null)
@@ -301,6 +302,9 @@ const NewOrder = () => {
                 </div>
             </form>
         </div>
+        <Helmet>
+            <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBUCHsKcPB42kheop8QdzlUPUSl43LJbVM&libraries=places"></script>
+        </Helmet>
     </>
 )}
 

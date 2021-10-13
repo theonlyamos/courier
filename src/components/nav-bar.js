@@ -8,6 +8,7 @@ import { btn, btnPrimary} from '../pages/styles.module.css'
 export default function NavBar({pageTitle}){
     let [user, setUser] = useState(null)
     useEffect(() => {
+
         if (isAuthenticated){
             getDBUser(getUser().toJSON().uid)
             .then((result)=>{
@@ -17,6 +18,7 @@ export default function NavBar({pageTitle}){
                 console.log(error)
             })
         }
+        
     }, [])
 
     const onLogout = async(e)=>{
@@ -26,7 +28,7 @@ export default function NavBar({pageTitle}){
     }
     return isAuthenticated()  ?
         (
-            <nav className="navbar navbar-expand-lg navbar-light bg-white" id="ftco-navbar">
+            <nav className="navbar navbar-expand-lg navbar-light bg-white sticky-top" id="ftco-navbar">
                 <div className="container">
                     <button className="navbar-toggler p-0p-2 border-0" type="button" data-bs-toggle="collapse" data-bs-target="#ftco-nav" aria-controls="ftco-nav" aria-expanded="false" aria-label="Toggle navigation">
                         <span className="fas fa-ellipsis-h fa-2x text-dark"></span>
@@ -59,17 +61,17 @@ export default function NavBar({pageTitle}){
                                     </li>
                                     <li className="nav-item d-flex align-items-center border-bottom">
                                         <i className="fas fa-truck-pickup fa-fw me-2 d-lg-none"></i>
-                                        <Link to="/app/vehicle" className="nav-link text-dark">Vehicle/Truck</Link>
+                                        <Link to="/app/vehicle" state={{user: user}} className="nav-link text-dark">Vehicle/Truck</Link>
                                     </li>
                                 </>
                             )}
                             <li className="nav-item d-flex align-items-center border-bottom">
                                 <i className="fas fa-user-cog fa-fw me-2 d-lg-none"></i>
-                                <Link to="/app/account" className="nav-link text-dark">Account</Link>
+                                <Link to="/app/account" state={{user: user}} className="nav-link text-dark">Account</Link>
                             </li>
                             <li className="nav-item d-flex align-items-center border-bottom">
                                 <i className="fas fa-cogs fa-fw me-2 d-lg-none"></i>
-                                <Link to="/app/settings" className="nav-link text-dark">Settings</Link>
+                                <Link to="/app/settings" state={{user: user}} className="nav-link text-dark">Settings</Link>
                             </li>
                             <li className="nav-item d-flex align-items-center text-danger">
                                 <i className="fas fa-sign-out-alt fa-fw me-2 d-lg-none"></i>

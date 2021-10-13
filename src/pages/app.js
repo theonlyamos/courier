@@ -12,6 +12,8 @@ import OrderDetails from '../components/order-details'
 import Pricing from '../components/pricing'
 import Vehicle from '../components/vehicle'
 import NewVehicle from '../components/new-vehicle'
+import Account from '../components/account'
+import Settings from '../components/settings'
 
 import PrivateRoute from '../components/privateRoute'
 
@@ -21,13 +23,15 @@ const App = () => (
         <PrivateRoute path="/orders" component={Orders}/>
         <PrivateRoute path="/orders/new" component={NewOrder}/>
         <PrivateRoute path="/orders/:orderId" component={OrderDetails}/>
-        <PrivateRoute path="/driver" component={Driver}/>
+        <Driver path="/driver"/>
+        <Account path="/account"/>
         <PrivateRoute path="/setup" component={Setup}/>
         <PrivateRoute path="/pricing" component={Pricing}/>
         <PrivateRoute path="/vehicle" component={Vehicle}/>
         <PrivateRoute path="/vehicle/new" component={NewVehicle}/>
         <Signup path="/signup"/>
         <Login path="/login"/>
+        <Settings path="/settings"/>
         <Loader default/>
     </Router>
 )

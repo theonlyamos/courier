@@ -50,19 +50,27 @@ const Vehicle = () => {
     <Layout>
         {error && (
             <div className="container position-absolute bottom-0 mb-3 left-0">
-                <div className="alert alert-danger alert-dismissible" role="alert">
-                    <span>{error}</span>
-                    <button type="button" className="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                <div className={`row align-items-center justify-content-center`}>
+                    <div className={`col-sm-9 col-md-6 col-lg-3`}>
+                        <div className="alert alert-danger alert-dismissible" role="alert">
+                            <span>{error}</span>
+                            <button type="button" className="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                        </div>
+                    </div>
                 </div>
             </div>
         )}
         <div className="container mt-5">
-            {!vehicle && (
-                <div className={`w-100 d-flex flex-column justify-content-center align-items-center`} style={{minHeight: '50vh'}}>
-                    <i className="fas fa-truck-moving fa-3x text-muted"></i>
-                    <Link to="/app/vehicle/new" className={`btn btn-primary ${rounded10} mt-3 text-white font-monospace`}>Add Vehicle/Truck</Link>
+            <div className={`row align-items-center justify-content-center`}>
+                <div className={`col-sm-9 col-md-6 col-lg-3`}>
+                    {!vehicle && (
+                        <div className={`w-100 d-flex flex-column justify-content-center align-items-center`} style={{minHeight: '50vh'}}>
+                            <i className="fas fa-truck-moving fa-3x text-muted"></i>
+                            <Link to="/app/vehicle/new" className={`btn btn-primary ${rounded10} mt-3 text-white font-monospace`}>Add Vehicle/Truck</Link>
+                        </div>
+                    )}
                 </div>
-            )}
+            </div>
         </div>
     </Layout>
 )}
