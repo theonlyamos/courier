@@ -13,7 +13,7 @@ const HomePage = ()=>{
       <>
           <Overlay></Overlay>
           <div className={`w-100 d-flex justify-content-end p-3`}>
-              <Link to="/       app/login" className={`btn btn-primary ${btn} ${btnPrimary}`}>LOGIN</Link>
+              <Link to="/app/login" className={`btn btn-primary ${btn} ${btnPrimary}`}>LOGIN</Link>
           </div>
           <ContainerBox>
             <div className={`row align-items-center justify-content-center`}>
@@ -25,7 +25,7 @@ const HomePage = ()=>{
                         <h2 className={`mt-3 text-center`}>Need something picked up?</h2>
                         <div className={`h5 pt-1 text-center font-monospace mt-2`}>Get access to thousands of cargo vehicles/trucks at the press of button</div>
                         <div className={`mt-4 w-100`}>
-                            <Link to="/app/signup" className={`btn btn-dark btn-lg w-100 text-uppercase ${btn} ${btnDark} ${btnLg}`}>Signup</Link>
+                            <Link to="/app/signup" className={`btn btn-dark btn-lg w-100 text-uppercase ${btn} ${btnDark} ${btnLg}`}>Get Started</Link>
                         </div>
                     </FlexBox>
                 </div>

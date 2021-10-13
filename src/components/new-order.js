@@ -10,8 +10,15 @@ import * as opencage from 'opencage-api-client'
 import Geocode from 'react-geocode'
 import GooglePlacesAutocomplete from 'react-google-places-autocomplete'
 import { Helmet } from 'react-helmet'
+import {useJsApiLoader} from '@react-google-maps/api'
 
 const NewOrder = () => {
+    const {isLoaded} = useJsApiLoader({
+        id: 'google-map-script',
+        googleMapsApiKey: process.env.GOOGLE_MAPS_API_KEY,
+        libraries: ["places"]
+    });
+
     const [user, setUser] = useState(null)
     const driversModal = createRef()
 
@@ -302,9 +309,6 @@ const NewOrder = () => {
                 </div>
             </form>
         </div>
-        <Helmet>
-            <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBUCHsKcPB42kheop8QdzlUPUSl43LJbVM&libraries=places"></script>
-        </Helmet>
     </>
 )}
 

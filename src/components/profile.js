@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react"
 import { navigate, Link } from 'gatsby'
 import { isAuthenticated, getUser } from "../services/auth"
 import { getDBUser } from "../services/user"
+import { getOrders, getOrdersCount } from "../services/order"
 import NavBar from '../components/nav-bar'
 import { rounded10 } from '../pages/styles.module.css'
 
@@ -11,7 +12,19 @@ const Profile = ({location}) => {
     const [error, setError] = useState('')
     const [isLoading, setIsLoading] = useState(false)
     const [orders, setOrders] = useState([])
-    
+    const [ordersCount, setOrdersCount] = useState(0)
+
+    useEffect(() => {
+
+        if (!isAuthenticated()){
+            navigate('/app/login')
+            return null
+        } 
+
+        getUserInfo()
+        getRecentOrders()
+
+    }, [])
 
     const getUserInfo = async()=>{
         try {
@@ -26,20 +39,27 @@ const Profile = ({location}) => {
         }
     }
 
-    useEffect(() => {
-
-        if (!isAuthenticated()){
-            navigate('/app/login')
-            return null
-        } 
-        
-        setUser(getUser().toJSON())
-        getUserInfo()
-
-    }, [user, orders, userInfo])
-
-    const orderDetails = (orderId)=>{
-        navigate(`/app/orders/${orderId}`)
+    const getRecentOrders = async()=>{
+        try {
+            setIsLoading(true)
+            const snapshot = await getOrders(getUser().toJSON().uid, 10)
+            if (!snapshot.empty){
+                let allOrders = []
+                snapshot.forEach(doc => {
+                    allOrders.push({id: doc.id, ...doc.data()})
+                })
+                console.log(allOrders)
+                setOrders(allOrders)
+                setIsLoading(false)
+            }
+            const count = await getOrdersCount(getUser().toJSON().uid)
+            setOrdersCount(count)
+            
+        }
+        catch(error){
+            console.log(error)
+            setIsLoading(false)
+        }
     }
 
     return (
@@ -56,7 +76,7 @@ const Profile = ({location}) => {
                         <div className="col-6 col-md-4 col-lg-3">
                             <div className={`card ${rounded10} border-2`}>
                                 <div className="card-body d-flex flex-column align-items-center justify-center">
-                                    <div className="h3 fw-bold">3</div>
+                                    <div className="h3 fw-bold">{ordersCount}</div>
                                     <div className="h6 text-secondary">Total Orders</div>
                                 </div>
                             </div>
@@ -64,7 +84,7 @@ const Profile = ({location}) => {
                         <div className="col-6 col-md-4 col-lg-3">
                             <div className={`card ${rounded10} border-2`}>
                                 <div className="card-body d-flex flex-column align-items-center justify-center">
-                                    <div className="h3 fw-bold">1</div>
+                                    <div className="h3 fw-bold">0</div>
                                     <div className="h6 text-secondary">Active Orders</div>
                                 </div>
                             </div>
@@ -91,7 +111,7 @@ const Profile = ({location}) => {
                                     </tr>
                                 )}
                                 {orders && orders.map((order, i)=>(
-                                    <tr key={i} onClick={()=>orderDetails(order.id)}>
+                                    <tr key={i}>
                                         <td><small>{++i}</small></td>
                                         <td><small>{order.cargoSize}</small></td>
                                         <td><small>{order.location.formatted}</small></td>
