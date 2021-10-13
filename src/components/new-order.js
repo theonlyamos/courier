@@ -149,6 +149,9 @@ const NewOrder = () => {
 
     return (
     <>
+        <Helmet>
+            <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBUCHsKcPB42kheop8QdzlUPUSl43LJbVM&libraries=places"></script>
+        </Helmet>
         <div className="modal fade" id="cargoSizeModal" tabIndex="-1" aria-labelledby="cargoSizeModalLabel" aria-hidden="true">
             <div className="modal-dialog modal-dialog-centered">
                 <div className="modal-content">
