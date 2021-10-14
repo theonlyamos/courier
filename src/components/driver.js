@@ -94,7 +94,7 @@ const Driver = ({location}) => {
                                     city: place.components.city,
                                     updatedAt: new Date().toUTCString()
                                 }
-                                alert(update)
+                                alert(JSON.stringify(update))
                                 await updateDBUser(getUser().toJSON().uid,update) 
                             }
                             catch(error){
