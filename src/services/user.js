@@ -22,5 +22,5 @@ export const removeDBUser = async(uid) => {
 }
 
 export const getDrivers = async(city) => {
-    return await firebase.firestore().collection('users').where('utype', '==', 'driver').where('city', '==', city).get()
+    return await firebase.firestore().collection('users').where('utype', '==', 'driver').where('city', '==', city).where('vehicle', '!=', null).get()
 }

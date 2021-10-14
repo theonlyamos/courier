@@ -31,7 +31,6 @@ const Orders = () => {
             snapshot.forEach(doc => {
                 allOrders.push({id: doc.id, ...doc.data()})
             })
-            console.log(allOrders)
             setOrders(allOrders)
             setIsLoading(false)
         }
@@ -75,7 +74,7 @@ const Orders = () => {
                                     </tr>
                                 )}
                                 {orders && orders.map((order, i)=>(
-                                    <tr key={i} onClick={()=>orderDetails(order.id)}>
+                                    <tr key={i} onClick={()=>orderDetails(order.id)} style={{cursor: 'pointer'}}>
                                         <td><small>{++i}</small></td>
                                         <td><small>{order.cargoSize}</small></td>
                                         <td><small>{order.location.formatted}</small></td>

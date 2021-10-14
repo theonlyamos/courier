@@ -184,7 +184,7 @@ const Account = ({location}) => {
                     <form onSubmit={handleSubmit}>
                         <div className="row mt-3">
                             {isSuccess && (
-                                <div className="alert alert-success alert-dismissible fade">
+                                <div className="alert alert-success alert-dismissible fade show">
                                     User info updated successfully
                                     <button type="button" className="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                                 </div>

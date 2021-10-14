@@ -1,4 +1,4 @@
-import React, { useEffect, useState, createRef } from "react"
+import React, { useEffect, useState } from "react"
 import { navigate } from 'gatsby'
 import { isAuthenticated, getUser } from "../services/auth"
 import { createOrder } from "../services/order"
@@ -20,9 +20,9 @@ const NewOrder = () => {
     });
 
     const [user, setUser] = useState(null)
-    const driversModal = createRef()
-
+    const [isLoading, setIsLoading] = useState(false)
     const [error, setError] = useState('')
+    const [isSuccess, setIsSuccess] = useState(false)
     const [cargoSize, setCargoSize] = useState('')
     const [location, setLocation] = useState({})
     const [destination, setDestination] = useState('')
@@ -74,7 +74,6 @@ const NewOrder = () => {
                         const data = await opencage.geocode({q: `${position.coords.latitude}, ${position.coords.longitude}`, key: "5e2fa48c562740639267690f8fb73597"})
                         if (data.results.length > 0){
                             let place = data.results[0]
-                            console.log(place)
                             setLocation({
                                 ...place.geometry,
                                 ...place.components,
@@ -121,7 +120,8 @@ const NewOrder = () => {
     const handleSubmit = async(e)=>{
         e.preventDefault()
         try {
-            const docRef = await createOrder({
+            setIsLoading(true)
+            await createOrder({
                 location,
                 destination,
                 driverID: driver.uid,
@@ -132,10 +132,16 @@ const NewOrder = () => {
                 createdAt: new Date().toUTCString(),
                 updatedAt: new Date().toUTCString()
             })
-            console.log(docRef)
+            setIsLoading(false)
+            setIsSuccess(true)
+            setTimeout(()=>{
+                navigate('/app/orders')
+            }, 3000)
         }
         catch(error){
             console.log(error)
+            setIsLoading(false)
+            setError(error.message)
         }
     }
 
@@ -192,10 +198,24 @@ const NewOrder = () => {
                                 <div key={i} className={`card ${rounded10} bg-dark mt-3 cursor-pointer`} data-bs-dismiss="modal" onClick={()=>{selectDriver(opt)}}>
                                     <div className="row ms-0">
                                         <div className={`col-4 text-center ${rounded10} p-3 bg-white`}>
-                                            <i className="far fa-user fa-3x"></i>
+                                            {opt.photoURL ? (
+                                                <img 
+                                                    src={opt.photoURL}
+                                                    className="w-100 img-fluid"
+                                                    style={{objectFit: 'cover', objectPosition: 'top'}}
+                                                    />
+                                            ) : (
+                                                <img 
+                                                    src={opt.vehicle.images[0]}
+                                                    className="w-100 img-fluid"
+                                                    style={{objectFit: 'cover', objectPosition: 'top'}}
+                                                    />
+                                            )}
                                         </div>
-                                        <div className="col-8 text-center">
-                                            <h3 className="text-center text-white fw-bold">{opt.displayName}</h3>
+                                        <div className="col-8 text-center d-flex flex-column justify-content-center">
+                                            <h4 className="text-center text-white">{opt.displayName}</h4>
+                                            <h4 className="text-center text-warning">
+                                                <i class="fas fa-phone-alt fa-fw"></i>{opt.phoneNumber.slice(0,5)}......</h4>
                                         </div>
                                     </div>
                                 </div>
@@ -213,13 +233,19 @@ const NewOrder = () => {
             </div>
         <form method='POST' className="mb-4" onSubmit={handleSubmit}>
             <div className={`row align-items-center justify-content-center`}>
-                <div className={`col-sm-9 col-md-6 col-lg-4`}>
-                    { (error.length > 1) && (
-                        <div className="alert alert-danger p-2">
-                            { error }
-                        </div>
-                    )}
-                        
+                <div className={`col-md-6 col-lg-5`}>
+                        { (error.length > 1) && (
+                            <div className="alert alert-danger alert-dismissible fade show p-2">
+                                { error }
+                                <button type="button" className="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                            </div>
+                        )}
+                        {isSuccess && (
+                                <div className="alert alert-success alert-dismissible fade show">
+                                    Order created successfully
+                                    <button type="button" className="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                                </div>
+                            )}
                         <div className="form-group mt-3">
                             <label className="text-secondary">Select Cargo Size</label>
                             <div className={`input-group border rounded`}>
@@ -305,7 +331,14 @@ const NewOrder = () => {
                         </div>
 
                         <div className={`form-group mt-3`}>
-                            <button className={`${btn} btn-dark ${btnLg} w-100 text-uppercase`}>Complete</button>
+                            
+                            {isLoading ? (
+                                <button type="submit" className="btn btn-dark w-100 text-uppercase" disabled>
+                                    <i className="fas fa-spin fa-spinner fa-fw"></i> Submitting...
+                                </button>
+                            ) : (
+                                <button className={`${btn} btn-dark ${btnLg} w-100 text-uppercase`}>Submit</button>
+                            )}
                         </div>
                     </div>
                 </div>

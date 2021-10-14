@@ -26,7 +26,7 @@ const Pricing = () => {
         reference: (new Date()).getTime().toString(),
         email: user.email,
         amount: 20000,
-        publicKey: process.env.PAYSTACK_PUBLIC_KEY,
+        publicKey: "pk_test_5463026b54f8b70e361626ddce22544182c7d314",
         currency: 'GHS',
         channels: ['mobile_money']
     };

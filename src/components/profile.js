@@ -48,7 +48,6 @@ const Profile = ({location}) => {
                 snapshot.forEach(doc => {
                     allOrders.push({id: doc.id, ...doc.data()})
                 })
-                console.log(allOrders)
                 setOrders(allOrders)
                 setIsLoading(false)
             }
@@ -78,14 +77,6 @@ const Profile = ({location}) => {
                                 <div className="card-body d-flex flex-column align-items-center justify-center">
                                     <div className="h3 fw-bold">{ordersCount}</div>
                                     <div className="h6 text-secondary">Total Orders</div>
-                                </div>
-                            </div>
-                        </div>
-                        <div className="col-6 col-md-4">
-                            <div className={`card ${rounded10} border-2`}>
-                                <div className="card-body d-flex flex-column align-items-center justify-center">
-                                    <div className="h3 fw-bold">0</div>
-                                    <div className="h6 text-secondary">Active Orders</div>
                                 </div>
                             </div>
                         </div>

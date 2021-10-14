@@ -13,7 +13,7 @@ export const getOrder = async(orderId) => {
     }
 }
 
-export const updateUpdate = async(uid, user) => {
+export const updateOrder = async(uid, user) => {
     return await firebase.firestore().collection('orders').doc(uid).update(user)
 }
 
@@ -31,5 +31,18 @@ export const getOrders = async(uid, limit=0) => {
     }
     else {
         return await firebase.firestore().collection('orders').where('userID', '==', uid).get()
+    }
+}
+
+export const getDriverOrdersCount = async(uid) => {
+    return await (await firebase.firestore().collection('orders').where('driverID', '==', uid).get()).size
+}
+
+export const getDriverOrders = async(uid, limit=0) => {
+    if (limit){
+        return await firebase.firestore().collection('orders').where('driverID', '==', uid).limit(limit).get()
+    }
+    else {
+        return await firebase.firestore().collection('orders').where('driverID', '==', uid).get()
     }
 }
