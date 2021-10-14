@@ -6,6 +6,7 @@ import { getDriverOrders, getDriverOrdersCount } from "../services/order"
 import Layout from '../components/layout'
 import { rounded10 } from '../pages/styles.module.css'
 import * as opencage from 'opencage-api-client'
+import { placements } from "@popperjs/core"
 
 const Driver = ({location}) => {
     const [user, setUser] = useState(null)
@@ -82,14 +83,21 @@ const Driver = ({location}) => {
                         const data = await opencage.geocode({q: `${position.coords.latitude}, ${position.coords.longitude}`, key: "5e2fa48c562740639267690f8fb73597"})
                         if (data.results.length > 0){
                             let place = data.results[0]
-                            await updateDBUser(getUser().toJSON().uid, {
-                                location: {
-                                    ...place.geometry,
-                                    ...place.components,
-                                    formatted: place.formatted
-                                },
-                                updatedAt: new Date().toUTCString()
-                            })
+                            console.log(place)
+                            try{
+                                await updateDBUser(getUser().toJSON().uid, {
+                                    location: {
+                                        ...place.geometry,
+                                        ...place.components,
+                                        formatted: place.formatted
+                                    },
+                                    city: place.components.city,
+                                    updatedAt: new Date().toUTCString()
+                                })
+                            }
+                            catch(error){
+                                console.log(error)
+                            }
                         }
                     }
                 },(error)=>{

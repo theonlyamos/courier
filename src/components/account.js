@@ -83,7 +83,7 @@ const Account = ({location}) => {
 
     const updateProfilePicture = async()=>{
         try {
-            setIsLoading(true)
+            setIsUploading(true)
             const file = profilePicture
             const format = pictureFormat
             const ext = format.split('/')[1]
