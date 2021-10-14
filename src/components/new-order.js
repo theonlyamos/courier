@@ -158,7 +158,7 @@ const NewOrder = () => {
         <div className="modal fade" id="cargoSizeModal" tabIndex="-1" aria-labelledby="cargoSizeModalLabel" aria-hidden="true">
             <div className="modal-dialog modal-dialog-centered">
                 <div className="modal-content">
-                    <div className="modal-header">
+                    <div className="modal-header bg-secondary">
                         <h5 className="modal-title text-uppercase text-muted">Select Cargo Size</h5>
                     </div>
                     <div className="modal-body">
@@ -189,7 +189,7 @@ const NewOrder = () => {
         <div className="modal fade" id="driversModal" tabIndex="-1" aria-labelledby="driversModalLabel" aria-hidden="true">
             <div className="modal-dialog modal-dialog-centered">
                 <div className="modal-content">
-                    <div className="modal-header">
+                    <div className="modal-header bg-secondary">
                         <h5 className="modal-title">Select Driver</h5>
                     </div>
                     <div className="modal-body">
