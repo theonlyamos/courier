@@ -85,7 +85,7 @@ const Driver = ({location}) => {
                         if (data.results.length > 0){
                             let place = data.results[0]
                             try{
-                                await updateDBUser(getUser().toJSON().uid, {
+                                const update ={
                                     location: {
                                         ...place.geometry,
                                         ...place.components,
@@ -93,26 +93,24 @@ const Driver = ({location}) => {
                                     },
                                     city: place.components.city,
                                     updatedAt: new Date().toUTCString()
-                                })
+                                }
+                                alert(update)
+                                await updateDBUser(getUser().toJSON().uid,update) 
                             }
                             catch(error){
                                 console.log(error)
-                                alert(error)
                             }
                         }
                     }
                 },(error)=>{
                     console.log(error)
-                    alert(error)
                 })
             }
             catch(error){
                 console.log(error)
-                alert(error)
             }
         } else {
             setError('Geolocation is not available on your device')
-            alert('Your device does not support geolocation')
         }
         
     }
