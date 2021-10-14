@@ -4,6 +4,7 @@ import Overlay from './overlay'
 import { isAuthenticated, getUser, logout } from '../services/auth'
 import { getDBUser } from '../services/user'
 import { btn, btnPrimary} from '../pages/styles.module.css'
+import { StaticImage } from 'gatsby-plugin-image'
 
 export default function NavBar({pageTitle}){
     let [user, setUser] = useState(null)
@@ -34,10 +35,27 @@ export default function NavBar({pageTitle}){
                         <span className="fas fa-ellipsis-h fa-2x text-dark"></span>
                     </button>
                     <header className="d-lg-none">{pageTitle ? pageTitle: ''}</header>
-                    {
-                    <a className="navbar-brand text-uppercase d-flex align-items-center" href="/">
-                        <i className="far fa-user-circle fa-2x"></i>
-                    </a>
+                    {user ? user.photoURL ? (
+                        <Link to="/app/account">
+                            <img 
+                                src={user.photoURL} 
+                                style={{width: "35px", height: "35px",
+                                        objectFit: "cover", objectPosition: "top",
+                                        cursor: 'pointer' }}
+                                className="rounded-circle"/>
+                        </Link>
+                    ) :
+                    (
+                        <a className="navbar-brand text-uppercase d-flex align-items-center" href="/">
+                            <i className="far fa-user-circle fa-2x"></i>
+                        </a>
+                    )
+                    : (
+                        <a className="navbar-brand text-uppercase d-flex align-items-center" href="/">
+                            <i className="far fa-user-circle fa-2x"></i>
+                        </a>
+                    )
+                    
                     }
                     <div className="collapse navbar-collapse justify-content-end" id="ftco-nav">
                         <ul className="navbar-nav">
