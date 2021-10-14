@@ -97,18 +97,22 @@ const Driver = ({location}) => {
                             }
                             catch(error){
                                 console.log(error)
+                                alert(error)
                             }
                         }
                     }
                 },(error)=>{
                     console.log(error)
+                    alert(error)
                 })
             }
             catch(error){
                 console.log(error)
+                alert(error)
             }
         } else {
             setError('Geolocation is not available on your device')
+            alert('Your device does not support geolocation')
         }
         
     }
