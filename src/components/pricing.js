@@ -58,9 +58,9 @@ const Pricing = () => {
         const initializePayment = usePaystackPayment(config);
         return (
           <div className="text-center">
-              <button className="btn btn-primary mt-4" onClick={() => {
+              <button className="btn btn-primary btn-lg mt-4" onClick={() => {
                   initializePayment(onSuccess, onClose)
-              }}>Pay GHS20</button>
+              }}>Pay GH&#x20B5;20</button>
           </div>
         );
     };
@@ -78,8 +78,8 @@ const Pricing = () => {
             <div className={`w-100 mt-5 px-5 text-center`}>
                 <i className={`fas fa-sign-in-alt fa-4x`}></i>
                 <h2 className={`mt-3`}>Registration Fee</h2>
-                <div className={`small mt-3`}>A GHS20 registration fee is required to complete registration.</div>
-                <div className={`small mt-2`}>You will be charged a GHS50/month subscription fee after the first month.</div>
+                <div className={`small mt-3`}>A <strong>GH&#x20B5;20</strong> registration fee is required to complete registration.</div>
+                <div className={`small mt-2`}>You will be charged a <strong>GH&#x20B5;50/month</strong> subscription fee after the first month.</div>
             </div>
             <div className={`col-sm-9 col-md-6 col-lg-4`}>
                 {isLoading && (

@@ -11,17 +11,13 @@ const Loader = () => {
             const result = await getDBUser(getUser().toJSON().uid)
             const user = result.data()
             if (user.utype === 'driver'){
-                if (!Object.keys(user.subscription).length)
+                if (!user.hasOwnProperty('subscription'))
                     navigate('/app/pricing')
                 else
-                    navigate('/app/driver', {
-                        state: {user}
-                    })
+                    navigate('/app/driver')
             }
             else{
-                navigate('/app/profile', {
-                    state: {user}
-                })
+                navigate('/app/profile')
             }
         }
         catch(error){

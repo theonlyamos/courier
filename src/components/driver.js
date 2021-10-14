@@ -67,6 +67,7 @@ const Driver = ({location}) => {
             }
             const count = await getDriverOrdersCount(getUser().toJSON().uid)
             setOrdersCount(count)
+            setIsLoading(false)
             
         }
         catch(error){
@@ -83,7 +84,6 @@ const Driver = ({location}) => {
                         const data = await opencage.geocode({q: `${position.coords.latitude}, ${position.coords.longitude}`, key: "5e2fa48c562740639267690f8fb73597"})
                         if (data.results.length > 0){
                             let place = data.results[0]
-                            console.log(place)
                             try{
                                 await updateDBUser(getUser().toJSON().uid, {
                                     location: {
