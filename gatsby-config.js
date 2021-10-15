@@ -18,6 +18,7 @@ module.exports = {
     "gatsby-plugin-image",
     "gatsby-plugin-netlify",
     "gatsby-plugin-mdx",
+    "gatsby-plugin-offline",
     {
       resolve: "gatsby-plugin-firebase",
       options: {

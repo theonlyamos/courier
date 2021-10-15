@@ -25,7 +25,7 @@ const Pricing = () => {
     const config = {
         reference: (new Date()).getTime().toString(),
         email: user.email,
-        amount: 20000,
+        amount: 2000,
         publicKey: "pk_test_5463026b54f8b70e361626ddce22544182c7d314",
         currency: 'GHS',
         channels: ['mobile_money']

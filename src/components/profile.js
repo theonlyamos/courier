@@ -61,6 +61,10 @@ const Profile = ({location}) => {
         }
     }
 
+    const orderDetails = (orderId)=>{
+        navigate(`/app/orders/${orderId}`)
+    }
+
     return (
     <>
         <NavBar pageTitle='Home'></NavBar>
@@ -102,7 +106,7 @@ const Profile = ({location}) => {
                                     </tr>
                                 )}
                                 {orders && orders.map((order, i)=>(
-                                    <tr key={i}>
+                                    <tr key={i} onClick={()=>orderDetails(order.id)} style={{cursor: 'pointer'}}>
                                         <td><small>{++i}</small></td>
                                         <td><small>{order.cargoSize}</small></td>
                                         <td><small>{order.location.formatted}</small></td>
