@@ -95,7 +95,7 @@ const Profile = ({location}) => {
                                     <th className="small">Location</th>
                                     <th className="small">Destination</th>
                                     <th className="small">Driver</th>
-                                    <th className="small">Price</th>
+                                    {/*<th className="small">Price</th>*/}
                                     <th className="small">Date</th>
                                 </tr>
                             </thead>
@@ -112,7 +112,7 @@ const Profile = ({location}) => {
                                         <td><small>{order.location.formatted}</small></td>
                                         <td><small>{order.destination.formatted}</small></td>
                                         <td><small>{order.driver.displayName}</small></td>
-                                        <td><small></small>&#x20B5;</td>
+                                        {/*<td><small></small>&#x20B5;</td>*/}
                                         <td><small></small>{new Date(order.createdAt).toLocaleDateString()}</td>
                                     </tr>
                                 ))}
