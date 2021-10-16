@@ -5,12 +5,21 @@ require("dotenv").config({
 module.exports = {
   siteMetadata: {
     siteUrl: "https://courier-gh.netlify.app",
-    title: "Courier",
+    title: "CourierGH",
   },
   plugins: [
     {
       resolve: "gatsby-plugin-manifest",
       options: {
+      	name: `Courier GH App`,
+        short_name: `CourierGH`,
+        description: `Want to move things from one location to other? Look no further`,
+        lang: `en`,
+        display: `standalone`,
+        icon: `src/images/icon.png`,
+        start_url: `/app`,
+        background_color: `#663399`,
+        theme_color: `#fff`,
         icon: "src/images/icon.png",
       },
     },
