@@ -8,6 +8,8 @@ import "firebase/functions"
 import "firebase/storage"
 
 export const onServiceWorkerUpdateReady = () => {
+  window.location.reload()
+  /*
   const answer = window.confirm(
     `This application has been updated. ` +
       `Reload to display the latest version?`
@@ -15,4 +17,5 @@ export const onServiceWorkerUpdateReady = () => {
   if (answer === true) {
     window.location.reload()
   }
+  */
 }

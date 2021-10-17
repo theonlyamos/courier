@@ -13,11 +13,6 @@ const OrderDetails = ({orderId}) => {
     const [error, setError] = useState('')
 
     useEffect(() => {
-        if (!isAuthenticated()){
-            navigate('/app/login')
-            return null
-        }
-
         setUser(getUser())
         fetchOrder()
 
@@ -50,7 +45,7 @@ const OrderDetails = ({orderId}) => {
             )}
             <div className={`row align-items-center justify-content-center`}>
                 {order && (
-                    <div className={`col-md-6 col-lg-5`}>
+                    <div className={`col-md-6 col-lg-5 position-relative`}>
                         <div className="card mb-3">
                             <div className="bg-dark text-white p-2">
                                 Location
@@ -84,7 +79,7 @@ const OrderDetails = ({orderId}) => {
                                         </div>
                                         <div className="col-8 text-center d-flex flex-column justify-content-center">
                                         <div className="p-2 bg-light border-bottom">{order?.driver?.displayName}</div>
-                                            <a href={`tel://${order?.driver?.phoneNumber}`} className="nav-link">
+                                            <a href={`tel:${order?.driver?.phoneNumber}`} className="nav-link">
                                                 <i className="fas fa-phone-alt fa-fw"></i>
                                                 {order?.driver?.phoneNumber}
                                             </a>
@@ -92,7 +87,7 @@ const OrderDetails = ({orderId}) => {
                                     </div>
                             </div>
                         </div>
-                        <div className="card mb-3">
+                        <div className="card mb-5">
                             <div className="bg-dark text-white p-2">
                                 Vehicle
                             </div>
@@ -115,7 +110,14 @@ const OrderDetails = ({orderId}) => {
                                 </div>
                             </div>
                         </div>
+                        <div className="w-100 bg-info p-2 text-center position-absolute bottom-0 left-0">
+		                	<a href={`tel:${order?.driver?.phoneNumber}`} className="btn btn-primary text-white">
+		                		<i className="fas fa-phone-alt fa-fw"></i>
+		                		Call Driver
+		                	</a>
+		                </div>
                     </div>
+                    
                 )}
             </div>
         </div>

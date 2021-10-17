@@ -40,12 +40,6 @@ const Account = ({location}) => {
 
 
     useEffect(() => {
-
-        if (!isAuthenticated()){
-            navigate('/app/login')
-            return null
-        } 
-
         if (profilePicture){
             updateProfilePicture()
         }

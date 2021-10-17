@@ -31,10 +31,6 @@ const NewOrder = () => {
     const [isFetchingLocation, setIsFetchingLocation] = useState(false)
 
     useEffect(() => {
-        if (!isAuthenticated()){
-            navigate('/app/login')
-            return null
-        }
         setUser(getUser().toJSON())
         Geocode.setApiKey("AIzaSyBUCHsKcPB42kheop8QdzlUPUSl43LJbVM")
     }, [])
@@ -121,7 +117,7 @@ const NewOrder = () => {
         e.preventDefault()
         try {
             setIsLoading(true)
-            await createOrder({
+            const newOrder = await createOrder({
                 location,
                 destination,
                 driverID: driver.uid,
@@ -135,7 +131,7 @@ const NewOrder = () => {
             setIsLoading(false)
             setIsSuccess(true)
             setTimeout(()=>{
-                navigate('/app/orders')
+                navigate(`app/orders/${newOrder.id}`)
             }, 3000)
         }
         catch(error){

@@ -23,6 +23,15 @@ const NewVehicle = () => {
     const [imageLinks, setImageLinks] = useState([])
     const fileInputRef = useRef()
 
+    useEffect(() => {
+        setUser(getUser().toJSON())
+        getUserInfo()
+
+        if ((imageLinks.length && pictures.length) && (imageLinks.length === pictures.length)){
+            createNewVehicle()
+        }
+    }, [imageLinks, pictures])
+    
     const getUserInfo = ()=>{
         getDBUser(getUser().toJSON().uid)
         .then((result)=>{
@@ -37,19 +46,6 @@ const NewVehicle = () => {
             console.log(error)
         })
     }
-
-    useEffect(() => {
-        if (!isAuthenticated()){
-            navigate('/app/login')
-            return null
-        }
-        setUser(getUser().toJSON())
-        getUserInfo()
-
-        if ((imageLinks.length && pictures.length) && (imageLinks.length === pictures.length)){
-            createNewVehicle()
-        }
-    }, [imageLinks, pictures])
 
     const selectImages = (e)=>{
         e.preventDefault()

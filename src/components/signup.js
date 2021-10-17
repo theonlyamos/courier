@@ -19,7 +19,7 @@ const Signup = () => {
 
     useEffect(() => {
         if (isAuthenticated()){
-            //navigate(`/app/`) 
+            navigate(`/app/`) 
         }
        console.log('Authentication', isAuthenticated())
     }, [])
