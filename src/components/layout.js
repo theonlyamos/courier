@@ -1,11 +1,10 @@
 import React from 'react'
-import NavBar from './nav-bar'
+import { FirebaseProvider } from '../services/firebase-provider'
 
 const Layout = ({children}) => (
-    <>
-        <NavBar/>
+    <FirebaseProvider>
         {children}
-    </>
+    </FirebaseProvider>
 )
 
 export default Layout

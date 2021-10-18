@@ -1,25 +1,25 @@
-import React, { useEffect, useState } from "react"
+import React, { useEffect, useState, useContext } from "react"
 import { navigate, Link } from 'gatsby'
 import { isAuthenticated, getUser } from "../services/auth"
 import { getOrders } from "../services/order"
 import NavBar from '../components/nav-bar'
 import { rounded10 } from '../pages/styles.module.css'
+import { FirebaseContext } from "../services/firebase-provider"
 
 const Orders = () => {
-    let [user, setUser] = useState({})
+    const { authToken, user } = useContext(FirebaseContext)
     const [error, setError] = useState('')
     const [isLoading, setIsLoading] = useState(true)
     const [orders, setOrders] = useState([])
 
     useEffect(() => {
-        if (!isAuthenticated()){
+        if (!authToken){
             navigate('/app/login')
             return null
         }
-        setUser(getUser().toJSON())
 
         getAllOrders()
-    }, [])
+    }, [authToken])
     
     const getAllOrders = async()=>{
         try {
@@ -45,6 +45,7 @@ const Orders = () => {
 
     return (
     <>
+        <title>CourierGH | Orders</title>
         <NavBar pageTitle='Orders'></NavBar>
         <div className="container mt-5">
             <div className={`row align-items-center justify-content-center`}>

@@ -1,53 +1,30 @@
-import React, { useEffect, useState } from "react"
+import React, { useEffect, useState, useContext } from "react"
 import { navigate, Link } from 'gatsby'
-import { isAuthenticated, getUser } from "../services/auth"
-import { getDBUser, updateDBUser } from "../services/user"
-import Layout from '../components/layout'
+import NavBar from '../components/nav-bar'
 import { rounded10 } from '../pages/styles.module.css'
 //import Geocode from 'react-geocode'
-import * as opencage from 'opencage-api-client'
+//import * as opencage from 'opencage-api-client'
+import { FirebaseContext } from "../services/firebase-provider"
 
 const Vehicle = () => {
-    const [user, setUser] = useState(null)
-    const [userInfo, setUserInfo] = useState({})
+    const { authToken, user } = useContext(FirebaseContext)
     const [error, setError] = useState('')
-    const [location, setLocation] = useState('')
-    const [locationLat, setLocationLat] = useState('')
-    const [locationLon, setLocationLon] = useState('')
-    const [isFetchingLocation, setIsFetchingLocation] = useState(false)
     const [vehicle, setVehicle] = useState('')
 
-    const getUserInfo = ()=>{
-        getDBUser(getUser().toJSON().uid)
-        .then((result)=>{
-            const driver = result.data()
-            setUserInfo(driver)
-            if (!Object.keys(driver.subscription).length){
-                navigate('/app/pricing')
-                return null
-            }
-
-            if (driver.vehicle){
-                setVehicle(driver.vehicle)
-            }
-        })
-        .catch((error)=>{
-            console.log(error)
-        })
-    }
-
     useEffect(() => {
-        if (!isAuthenticated()){
+        if (!authToken){
             navigate('/app/login')
             return null
         } 
-        
-        setUser(getUser().toJSON())
-        getUserInfo()
-    }, [])
+
+        if (user){
+            setVehicle(user.vehicle)
+        }
+    }, [authToken, user, setVehicle])
 
     return (
-    <Layout>
+    <>
+        <NavBar pageTitle="Vehicle/Truck"/>
         {error && (
             <div className="container position-absolute bottom-0 mb-3 left-0">
                 <div className={`row align-items-center justify-content-center`}>
@@ -60,7 +37,7 @@ const Vehicle = () => {
                 </div>
             </div>
         )}
-        <div className="container mt-5">
+        <div className="container mt-2">
             <div className={`row align-items-center justify-content-center`}>
                 <div className={`col-md-6 col-lg-5`}>
                     {vehicle  ?(
@@ -105,6 +82,7 @@ const Vehicle = () => {
                                             height: '100%', 
                                             objectFit: 'cover', 
                                             objectPosition: 'top'}}
+                                            alt=""
                                         />
                                     </div>
                                 </div>
@@ -119,7 +97,7 @@ const Vehicle = () => {
                 </div>
             </div>
         </div>
-    </Layout>
+    </>
 )}
 
 export default Vehicle

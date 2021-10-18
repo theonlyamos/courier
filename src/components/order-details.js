@@ -1,19 +1,25 @@
-import React, { useEffect, useState } from "react"
+import React, { useEffect, useState, useContext } from "react"
 import { navigate, Link } from 'gatsby'
 import { isAuthenticated, getUser } from "../services/auth"
 import { getDBUser, updateDBUser } from "../services/user"
 import { getOrder, updateOrder } from "../services/order"
 import BackButtonNavbar from "./back-button-navbar"
 import { rounded10 } from '../pages/styles.module.css'
+import { FirebaseContext } from "../services/firebase-provider"
 
 const OrderDetails = ({orderId}) => {
-    const [user, setUser] = useState(null)
+    const { authToken } = useContext(FirebaseContext)
     const [order, setOrder] = useState({})
     const [isLoading, setIsLoading] = useState(false)
     const [error, setError] = useState('')
 
     useEffect(() => {
-        setUser(getUser())
+        if (!authToken){
+            navigate('/app/login')
+            return null
+        } 
+        
+        //setUser(getUser())
         fetchOrder()
 
     }, [order])
@@ -36,7 +42,7 @@ const OrderDetails = ({orderId}) => {
     return (
     <>
         <BackButtonNavbar pageTitle="Order Details"/>
-        <div className="container mt-3">
+        <div className="container mt-1 position-relative">
             {isLoading && (
                 <div className={`w-100 mt-5 text-center`}>
                     <i className={`fas fa-spin fa-spinner fa-3x`}></i>
@@ -45,7 +51,13 @@ const OrderDetails = ({orderId}) => {
             )}
             <div className={`row align-items-center justify-content-center`}>
                 {order && (
-                    <div className={`col-md-6 col-lg-5 position-relative`}>
+                    <div className={`col-md-6 col-lg-5`}>
+                    <div className="w-100 mb-3 text-center">
+                            <a href={`tel:${order?.driver?.phoneNumber}`} className="btn btn-lg btn-primary text-white">
+                                <i className="fas fa-phone-alt fa-fw"></i>
+                                Call Driver
+                            </a>
+                        </div>
                         <div className="card mb-3">
                             <div className="bg-dark text-white p-2">
                                 Location
@@ -73,7 +85,7 @@ const OrderDetails = ({orderId}) => {
                                                 />
                                             )
                                             : (
-                                                <i class="fas fa-user-alt fa-3x"></i>
+                                                <i className="fas fa-user-alt fa-3x"></i>
                                             )
                                             }
                                         </div>
@@ -110,12 +122,6 @@ const OrderDetails = ({orderId}) => {
                                 </div>
                             </div>
                         </div>
-                        <div className="w-100 bg-info p-2 text-center position-absolute bottom-0 left-0">
-		                	<a href={`tel:${order?.driver?.phoneNumber}`} className="btn btn-primary text-white">
-		                		<i className="fas fa-phone-alt fa-fw"></i>
-		                		Call Driver
-		                	</a>
-		                </div>
                     </div>
                     
                 )}

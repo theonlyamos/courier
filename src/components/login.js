@@ -1,32 +1,45 @@
-import React, { useEffect, useState } from "react"
+import React, { useEffect, useState, useContext, useCallback } from "react"
 import {Link} from 'gatsby'
 import {btn, btnLg} from '../pages/styles.module.css'
 import { signin, isAuthenticated } from '../services/auth';
 import { navigate } from 'gatsby'
+import { FirebaseContext } from "../services/firebase-provider";
+import { getDBUser } from "../services/user";
+
 
 const Login = () => {
+    const { authToken, user,  setAuthToken, setUser } = useContext(FirebaseContext)
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
     const [isLoading, setIsLoading] = useState(false)
     const [error, setError] = useState('')
 
-
     useEffect(() => {
-        
+        /*
         if (isAuthenticated()){
             navigate('/app/')
         }
-        
-       console.log('Authentication', isAuthenticated())
-    }, [])
+        */
+        if (authToken && user) {
+            navigate('/app')
+        }
+    }, [authToken, user])
 
-    const handleSubmit = async (event) => {
+    const handleSubmit =  useCallback(async(event) => {
         event.preventDefault()
+
         try{
             setIsLoading(true)
-            await signin(email, password) 
+            //await signin(email, password) 
+            const { user } = await signin(email, password)
+            if (user) {
+                const { refreshToken } = user
+                setAuthToken(refreshToken)
+                const result = await getDBUser(user.toJSON().uid)
+                setUser(result.data())
+            }
             setIsLoading(false)
-            navigate('/app/') 
+            //navigate('/app/') 
         }catch(e){
             setError(e.message)
             if (e.code === 'auth/user-not-found'){
@@ -34,7 +47,7 @@ const Login = () => {
             }
             setIsLoading(false)
         }
-    }
+    }, [email, password, signin, setAuthToken])
 
     return (
     <> <div className={`container`}>

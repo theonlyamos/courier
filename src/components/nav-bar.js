@@ -1,33 +1,27 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState, useContext } from 'react'
 import { Link, navigate } from 'gatsby'
 import Overlay from './overlay'
 import { isAuthenticated, getUser, logout } from '../services/auth'
 import { getDBUser } from '../services/user'
 import { btn, btnPrimary} from '../pages/styles.module.css'
-import { StaticImage } from 'gatsby-plugin-image'
+import { FirebaseContext } from '../services/firebase-provider'
 
 export default function NavBar({pageTitle}){
-    let [user, setUser] = useState(null)
+    const { authToken, user, setUser, setAuthToken } = useContext(FirebaseContext)
+    //let [user, setUser] = useState(null)
     useEffect(() => {
-
-        if (isAuthenticated){
-            getDBUser(getUser().toJSON().uid)
-            .then((result)=>{
-                setUser(result.data())
-            })
-            .catch((error)=>{
-                console.log(error)
-            })
-        }
         
-    }, [])
+    }, [authToken,  user])
 
     const onLogout = async(e)=>{
         e.preventDefault()
         await logout()
+        setUser(null)
+        setAuthToken(null)
+        localStorage.clear()
         navigate('/app/login')
     }
-    return isAuthenticated()  ?
+    return authToken  ?
         (
             <nav className="navbar navbar-expand-lg navbar-light bg-white sticky-top" id="ftco-navbar">
                 <div className="container">
@@ -42,7 +36,7 @@ export default function NavBar({pageTitle}){
                                 style={{width: "35px", height: "35px",
                                         objectFit: "cover", objectPosition: "top",
                                         cursor: 'pointer' }}
-                                className="rounded-circle"/>
+                                className="rounded-circle" alt=""/>
                         </Link>
                     ) :
                     (

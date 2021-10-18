@@ -1,48 +1,34 @@
-import React, { useEffect, useState } from "react"
+import React, { useEffect, useState, useContext } from "react"
 import { navigate, Link } from 'gatsby'
-import { isAuthenticated, getUser } from "../services/auth"
-import { getDBUser } from "../services/user"
+import { getUser } from "../services/auth"
 import { getOrders, getOrdersCount } from "../services/order"
 import NavBar from '../components/nav-bar'
 import { rounded10 } from '../pages/styles.module.css'
+import { FirebaseContext } from "../services/firebase-provider"
 
 const Profile = ({location}) => {
-    const [user, setUser] = useState({})
-    const [userInfo, setUserInfo] = useState({})
-    const [error, setError] = useState('')
+    const { authToken, user } = useContext(FirebaseContext)
     const [isLoading, setIsLoading] = useState(false)
     const [orders, setOrders] = useState([])
     const [ordersCount, setOrdersCount] = useState(0)
 
     useEffect(() => {
 
-        if (!isAuthenticated()){
+        if (!authToken){
             navigate('/app/login')
             return null
         } 
 
-        getUserInfo()
-        getRecentOrders()
-
-    }, [])
-
-    const getUserInfo = async()=>{
-        try {
-            const result = await getDBUser(getUser().toJSON().uid)
-            if (result.exists){
-                const account = result.data()
-                setUserInfo(account)
-            }
+        if (user){
+            getRecentOrders()
         }
-        catch(error){
-            console.log(error)
-        }
-    }
+
+    }, [authToken, getRecentOrders, user])
 
     const getRecentOrders = async()=>{
         try {
             setIsLoading(true)
-            const snapshot = await getOrders(getUser().toJSON().uid, 10)
+            const snapshot = await getOrders(user.uid, 10)
             if (!snapshot.empty){
                 let allOrders = []
                 snapshot.forEach(doc => {
@@ -68,6 +54,7 @@ const Profile = ({location}) => {
     return (
     <>
         <NavBar pageTitle='Home'></NavBar>
+        <title>CourierGH | Home</title>
         <div className="container mt-5">
         <div className={`row align-items-center justify-content-center`}>
                 <div className={`col-lg-6`}>

@@ -1,11 +1,13 @@
-import React, { useEffect, useState } from "react"
+import React, { useEffect, useState, useCallback, useContext } from "react"
 import {Link} from 'gatsby'
 import { signup, updateUser, getUser, isAuthenticated } from '../services/auth';
 import { createDBUser } from '../services/user';
 import { navigate } from 'gatsby'
 import {btn, btnLg} from '../pages/styles.module.css'
+import { FirebaseContext } from "../services/firebase-provider";
 
 const Signup = () => {
+    const { firebase, authToken, setAuthToken } = useContext(FirebaseContext)
     const [displayName, setDisplayName] = useState('')
     const [phoneNumber, setPhoneNumber] = useState('')
     const [email, setEmail] = useState('')
@@ -18,11 +20,17 @@ const Signup = () => {
     const [isSuccess, setIsSuccess] = useState('')
 
     useEffect(() => {
+        /*
         if (isAuthenticated()){
-            navigate(`/app/`) 
+            navigate('/app/')
         }
-       console.log('Authentication', isAuthenticated())
-    }, [])
+        */
+        if (authToken) {
+            navigate('/app')
+        }
+        
+       console.log('Authentication: ', authToken)
+    }, [authToken])
 
     const selectUserType = (e) => {
         setUtype(e.target.value)
@@ -30,16 +38,21 @@ const Signup = () => {
             setIsDriver(true)
     }
 
-    const handleSubmit = async (event) => {
+    const handleSubmit = useCallback(async (event) => {
         event.preventDefault()
         try{
           if (password === cpassword){
                 setIsLoading(true)
-                await signup(email, password) 
+                const { user } = await signup(email, password)
+                if (user) {
+                    const { refreshToken } = user
+                    setAuthToken(refreshToken)
+                }
+                //await signup(email, password) 
                 await updateUser({displayName})
-                const user = getUser().toJSON()
+                const loggedInUser = getUser().toJSON()
                 await createDBUser({
-                    uid: user.uid,
+                    uid: loggedInUser.uid,
                     email,
                     displayName,
                     phoneNumber,
@@ -64,7 +77,7 @@ const Signup = () => {
             }
             setIsLoading(false)
         }
-    }
+    },[displayName, phoneNumber, email, password, setAuthToken])
     return ( <> <div className={`container`}>
         <div className={`w-100 d-flex justify-content-between align-items-center p-3`}>
         <Link to='/app'>

@@ -1,15 +1,15 @@
-import React, { useEffect, useState } from "react"
+import React, { useEffect, useState, useContext } from "react"
 import { navigate } from 'gatsby'
 import { isAuthenticated, getUser } from "../services/auth"
 import { getDBUser } from "../services/user"
+import { FirebaseContext } from "../services/firebase-provider"
 
 const Loader = () => {
+    const { authToken, user } = useContext(FirebaseContext)
     const [isLoading, setIsLoading] = useState(true)
     
     const checkUserType = async() => {
         try{
-            const result = await getDBUser(getUser().toJSON().uid)
-            const user = result.data()
             if (user.utype === 'driver'){
                 if (!user.hasOwnProperty('subscription'))
                     navigate('/app/pricing')
@@ -27,13 +27,13 @@ const Loader = () => {
     }
 
     useEffect(() => {
-        
-        if (isAuthenticated()){
+        //if (isAuthenticated()){
+        if (authToken){
             checkUserType()
         }
         else
             navigate('/app/login')
-    }, [])
+    }, [authToken, user])
 
  
     return (

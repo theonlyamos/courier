@@ -1,6 +1,5 @@
-import React, { useEffect, useState } from "react"
+import React, { useEffect, useState, useContext } from "react"
 import { navigate } from 'gatsby'
-import { isAuthenticated, getUser } from "../services/auth"
 import { createOrder } from "../services/order"
 import { getDrivers } from "../services/user"
 import BackButtonNavbar from './/back-button-navbar'
@@ -9,17 +8,17 @@ import * as opencage from 'opencage-api-client'
 //import { usePlacesWidget } from "react-google-autocomplete";
 import Geocode from 'react-geocode'
 import GooglePlacesAutocomplete from 'react-google-places-autocomplete'
-import { Helmet } from 'react-helmet'
+//import { Helmet } from 'react-helmet'
 import {useJsApiLoader} from '@react-google-maps/api'
+import { FirebaseContext } from "../services/firebase-provider"
 
 const NewOrder = () => {
+    const { authToken, user } = useContext(FirebaseContext)
     const {isLoaded} = useJsApiLoader({
         id: 'google-map-script',
         googleMapsApiKey: "AIzaSyBUCHsKcPB42kheop8QdzlUPUSl43LJbVM",
         libraries: ["places"]
     });
-
-    const [user, setUser] = useState(null)
     const [isLoading, setIsLoading] = useState(false)
     const [error, setError] = useState('')
     const [isSuccess, setIsSuccess] = useState(false)
@@ -31,9 +30,13 @@ const NewOrder = () => {
     const [isFetchingLocation, setIsFetchingLocation] = useState(false)
 
     useEffect(() => {
-        setUser(getUser().toJSON())
+        if (!authToken){
+            navigate('/app/login')
+            return null
+        }
+        //setUser(getUser().toJSON())
         Geocode.setApiKey("AIzaSyBUCHsKcPB42kheop8QdzlUPUSl43LJbVM")
-    }, [])
+    }, [authToken, user])
     /*
     const { ref, autocompleteRef } = usePlacesWidget({
         apiKey: process.env.GOOGLE_MAPS_API_KEY,
@@ -103,7 +106,6 @@ const NewOrder = () => {
         const data = await opencage.geocode({q: e.label, key: "5e2fa48c562740639267690f8fb73597"})
         if (data.results.length > 0){
             let place = data.results[0]
-            console.log(place)
             setDestination({
                 ...place.geometry,
                 ...place.components,
@@ -117,7 +119,7 @@ const NewOrder = () => {
         e.preventDefault()
         try {
             setIsLoading(true)
-            const newOrder = await createOrder({
+            const result = await createOrder({
                 location,
                 destination,
                 driverID: driver.uid,
@@ -128,10 +130,11 @@ const NewOrder = () => {
                 createdAt: new Date().toUTCString(),
                 updatedAt: new Date().toUTCString()
             })
+
             setIsLoading(false)
             setIsSuccess(true)
             setTimeout(()=>{
-                navigate(`app/orders/${newOrder.id}`)
+                navigate(`/app/orders/${result.id}`)
             }, 3000)
         }
         catch(error){
@@ -211,7 +214,7 @@ const NewOrder = () => {
                                         <div className="col-8 text-center d-flex flex-column justify-content-center">
                                             <h4 className="text-center text-white">{opt.displayName}</h4>
                                             <h4 className="text-center text-warning">
-                                                <i class="fas fa-phone-alt fa-fw"></i>{opt.phoneNumber.slice(0,5)}......</h4>
+                                                <i className="fas fa-phone-alt fa-fw"></i>{opt.phoneNumber.slice(0,5)}......</h4>
                                         </div>
                                     </div>
                                 </div>
@@ -221,6 +224,7 @@ const NewOrder = () => {
                 </div>
             </div>
         </div>
+        
         <div className="container">
             <BackButtonNavbar pageTitle="New Order"/>
             <div className={`w-100 mt-5 text-center`}>
@@ -329,7 +333,7 @@ const NewOrder = () => {
                         <div className={`form-group mt-3`}>
                             
                             {isLoading ? (
-                                <button type="submit" className="btn btn-dark w-100 text-uppercase" disabled>
+                                <button type="submit" className={`${btn} btn-dark ${btnLg} w-100 text-uppercase`} disabled>
                                     <i className="fas fa-spin fa-spinner fa-fw"></i> Submitting...
                                 </button>
                             ) : (

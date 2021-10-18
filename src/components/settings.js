@@ -1,13 +1,13 @@
-import React, { useEffect, useState } from "react"
-import { navigate, Link } from 'gatsby'
-import { isAuthenticated, getUser } from "../services/auth"
-import { getDBUser, updateDBUser } from "../services/user"
+import React, { useEffect, useState, useContext } from "react"
+import { navigate } from 'gatsby'
+import { getUser } from "../services/auth"
+//import { getDBUser, updateDBUser } from "../services/user"
 import NavBar from '../components/nav-bar'
-import { rounded10 } from '../pages/styles.module.css'
+//import { rounded10 } from '../pages/styles.module.css'
+import { FirebaseContext } from "../services/firebase-provider"
 
 const Settings = ({location}) => {
-    const [user, setUser] = useState({})
-    const [userInfo, setUserInfo] = useState({})
+    const { authToken, user } = useContext(FirebaseContext)
     const [error, setError] = useState('')
     const [isLoading, setIsLoading] = useState(false)
     const [isSuccess, setIsSuccess] = useState(false)
@@ -15,30 +15,13 @@ const Settings = ({location}) => {
     const [passwordConfirm, setPasswordConfirm] = useState('')
     
 
-    const getUserInfo = async()=>{
-        try {
-            const result = await getDBUser(getUser().toJSON().uid)
-            if (result.exists){
-                const account = result.data()
-                setUserInfo(account)
-            }
-        }
-        catch(error){
-            console.log(error)
-        }
-    }
-
     useEffect(() => {
-
-        if (!isAuthenticated()){
+        if (!authToken){
             navigate('/app/login')
             return null
         } 
-        
-        setUser(getUser().toJSON())
-        getUserInfo()
 
-    }, [])
+    }, [authToken, user])
 
     const handleSubmit = async(e)=>{
         e.preventDefault()

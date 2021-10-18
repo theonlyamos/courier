@@ -1,16 +1,14 @@
-import React, { useEffect, useState, useRef } from "react"
+import React, { useEffect, useState, useRef, useContext } from "react"
 import { navigate } from 'gatsby'
-import { isAuthenticated, getUser } from "../services/auth"
-import { updateDBUser, getDBUser} from "../services/user"
+import { updateDBUser } from "../services/user"
 import { createVehicle, getVehicle } from "../services/vehicle"
 import { uploadFile } from '../services/storage'
 import BackButtonNavbar from './back-button-navbar'
 import { btn, btnLg, rounded10 } from '../pages/styles.module.css'
-import { upload } from "../services/storage"
+import { FirebaseContext } from "../services/firebase-provider"
 
 const NewVehicle = () => {
-    const [user, setUser] = useState('')
-    const [userInfo, setUserInfo] = useState('')
+    const { authToken, user } = useContext(FirebaseContext)
     const [error, setError] = useState('')
     const [isLoading, setIsLoading] = useState(false)
     const [vehicleType, setVehicleType] = useState('truck')
@@ -24,28 +22,15 @@ const NewVehicle = () => {
     const fileInputRef = useRef()
 
     useEffect(() => {
-        setUser(getUser().toJSON())
-        getUserInfo()
+        if (!authToken){
+            navigate('/app/login')
+            return null
+        }
 
         if ((imageLinks.length && pictures.length) && (imageLinks.length === pictures.length)){
             createNewVehicle()
         }
-    }, [imageLinks, pictures])
-    
-    const getUserInfo = ()=>{
-        getDBUser(getUser().toJSON().uid)
-        .then((result)=>{
-            const driver = result.data()
-            setUserInfo(driver)
-            if (driver.utype !== 'driver'){
-                navigate('/app/login')
-                return null
-            }
-        })
-        .catch((error)=>{
-            console.log(error)
-        })
-    }
+    }, [authToken, user, imageLinks, pictures])
 
     const selectImages = (e)=>{
         e.preventDefault()
@@ -274,6 +259,7 @@ const NewVehicle = () => {
                                                 height: '100%', 
                                                 objectFit: 'cover', 
                                                 objectPosition: 'top'}}
+                                                alt=""
                                             />
                                         </div>
                                     </div>

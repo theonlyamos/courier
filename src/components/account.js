@@ -1,14 +1,14 @@
-import React, { useEffect, useState, useRef } from "react"
-import { navigate, Link } from 'gatsby'
-import { isAuthenticated, getUser, updateUser } from "../services/auth"
-import { getDBUser, updateDBUser } from "../services/user"
+import React, { useEffect, useState, useRef, useContext } from "react"
+import { navigate } from 'gatsby'
+import { getUser, updateUser } from "../services/auth"
+import { updateDBUser } from "../services/user"
 import { uploadFile } from '../services/storage'
 import NavBar from '../components/nav-bar'
 import { rounded10 } from '../pages/styles.module.css'
+import { FirebaseContext } from "../services/firebase-provider"
 
 const Account = ({location}) => {
-    const [user, setUser] = useState({})
-    const [userInfo, setUserInfo] = useState({})
+    const { authToken, user } = useContext(FirebaseContext)
     const [isLoading, setIsLoading] = useState(false)
     const [isUploading, setIsUploading] = useState(false)
     const [isSuccess, setIsSuccess] = useState(false)
@@ -20,59 +20,11 @@ const Account = ({location}) => {
     const [email, setEmail] = useState('')
     const fileInputRef = useRef()
 
-    const getUserInfo = async()=>{
-        try {
-            const result = await getDBUser(getUser().toJSON().uid)
-            if (result.exists){
-                const account = result.data()
-                setPhotoURL(account.photoURL)
-                setDisplayName(account.displayName)
-                setPhoneNumber(account.phoneNumber)
-                setEmail(account.email)
-                setUserInfo(account)
-            }
-            
-        }
-        catch(error) {
-            console.log(error)
-        }
-    }
-
-
-    useEffect(() => {
-        if (profilePicture){
-            updateProfilePicture()
-        }
-
-        setUser(getUser())
-        getUserInfo()
-    }, [user, profilePicture])
-    
-
-    const selectImage = (e)=>{
-        e.preventDefault()
-        fileInputRef.current.click()
-    }
-
-    const handleFiles = (e)=>{
-        const files = e.target.files;
-
-        for (let i = 0; i < files.length; i++) {
-            const file = files[i];
-
-            if (!file.type.startsWith('image/')) {
-                continue
-            }
-            setPictureFormat(file.type)
-            const reader = new FileReader();
-            
-            reader.onload = (function() {
-                return function(e) {
-                    setProfilePicture(e.target.result);
-                }
-            })();
-            reader.readAsDataURL(file);
-        }
+    const setUserInfo = async()=>{
+        setPhotoURL(user.photoURL)
+        setDisplayName(user.displayName)
+        setPhoneNumber(user.phoneNumber)
+        setEmail(user.email)
     }
 
     const updateProfilePicture = async()=>{
@@ -117,6 +69,46 @@ const Account = ({location}) => {
         }
     }
 
+    useEffect(() => {
+        if (!authToken){
+            navigate('/app/login')
+            return null
+        }
+
+        if (profilePicture){
+            updateProfilePicture()
+        }
+
+        if (user)
+            setUserInfo()
+    }, [authToken, user, setUserInfo, profilePicture, updateProfilePicture])
+
+    const selectImage = (e)=>{
+        e.preventDefault()
+        fileInputRef.current.click()
+    }
+
+    const handleFiles = (e)=>{
+        const files = e.target.files;
+
+        for (let i = 0; i < files.length; i++) {
+            const file = files[i];
+
+            if (!file.type.startsWith('image/')) {
+                continue
+            }
+            setPictureFormat(file.type)
+            const reader = new FileReader();
+            
+            reader.onload = (function() {
+                return function(e) {
+                    setProfilePicture(e.target.result);
+                }
+            })();
+            reader.readAsDataURL(file);
+        }
+    }
+
     const handleSubmit = async(e)=>{
         e.preventDefault()
         await updateUserInfo()
@@ -141,6 +133,7 @@ const Account = ({location}) => {
                                         height: '100%', 
                                         objectFit: 'cover', 
                                         objectPosition: 'top'}}
+                                        alt=""
                                     />
                                 )
                                 :
@@ -151,6 +144,7 @@ const Account = ({location}) => {
                                         height: '100%', 
                                         objectFit: 'cover', 
                                         objectPosition: 'top'}}
+                                        alt=""
                                     />
                                 )
                                 : (
