@@ -166,7 +166,7 @@ const NewVehicle = () => {
             </div>
         <form method='POST' className="mb-4" onSubmit={handleSubmit}>
             <div className={`row align-items-center justify-content-center`}>
-                <div className={`col-sm-9 col-md-6 col-lg-3`}>
+                <div className={`col-md-6 col-lg-5`}>
                     { (error.length > 1) && (
                         <div className="alert alert-danger p-2">
                             { error }
