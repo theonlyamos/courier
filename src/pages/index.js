@@ -6,11 +6,16 @@ import ContainerBox from '../components/container'
 import FlexBox from '../components/flexbox'
 import InputBox from '../components/inputbox'
 import { btn, btnLg, btnPrimary, btnDark } from './styles.module.css'
+import Helmet from 'react-helmet'
 
 const HomePage = ()=>{
       
   return (
       <>
+		  <Helmet>
+			 <title>CourierGH</title>
+			 <meta name="description" content="Want to move things from one location to other? Look no further"/>
+		  </Helmet>
           <Overlay></Overlay>
           <div className={`w-100 d-flex justify-content-end p-3`}>
               <Link to="/app/login" className={`btn btn-primary ${btn} ${btnPrimary}`}>LOGIN</Link>
