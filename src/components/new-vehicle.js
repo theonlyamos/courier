@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useRef, useContext } from "react"
 import { navigate } from 'gatsby'
-import { updateDBUser } from "../services/user"
+import { updateDBUser, getDBUser } from "../services/user"
 import { createVehicle, getVehicle } from "../services/vehicle"
 import { uploadFile } from '../services/storage'
 import BackButtonNavbar from './back-button-navbar'
@@ -8,7 +8,7 @@ import { btn, btnLg, rounded10 } from '../pages/styles.module.css'
 import { FirebaseContext } from "../services/firebase-provider"
 
 const NewVehicle = () => {
-    const { authToken, user } = useContext(FirebaseContext)
+    const { authToken, user, setUser } = useContext(FirebaseContext)
     const [error, setError] = useState('')
     const [isLoading, setIsLoading] = useState(false)
     const [vehicleType, setVehicleType] = useState('')
@@ -109,6 +109,12 @@ const NewVehicle = () => {
             vehicle: {...vehicle},
             updatedAt: new Date().toUTCString()
         })
+        setImageLinks([])
+        setPictures([])
+        let result = await getDBUser(user.uid)
+        if (result.exists){
+        	setUser(result.data())
+        }
         navigate('/app/vehicle')
 
         setIsLoading(false)
