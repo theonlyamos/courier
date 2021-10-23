@@ -10,7 +10,7 @@ import { placements } from "@popperjs/core"
 import { FirebaseContext } from "../services/firebase-provider"
 
 const Driver = ({location}) => {
-    const { authToken, user } = useContext(FirebaseContext)
+    const { authToken, user, setUser } = useContext(FirebaseContext)
     //const [isFetchingVehicle, setIsFetchingVehicle] = useState(false)
     const [vehicle, setVehicle] = useState('')
     const [error, setError] = useState('')
@@ -25,11 +25,12 @@ const Driver = ({location}) => {
             return null
         } 
 
-        getRecentOrders()
+		if(!orders)
+        	getRecentOrders()
         getLocation()
         setInterval(getLocation, 300000)
 
-    }, [authToken, getRecentOrders, user])
+    }, [authToken, getRecentOrders])
 
     const getRecentOrders = async()=>{
         try {
@@ -74,6 +75,10 @@ const Driver = ({location}) => {
                                 }
                                 //alert(JSON.stringify(update))
                                 await updateDBUser(user.uid,update) 
+                                let result = await getDBUser(user.uid)
+                                if (result.exists){
+                                	setUser(result.data())
+                                }
                             }
                             catch(error){
                                 console.log(error)

@@ -40,14 +40,14 @@ export default function NavBar({pageTitle}){
                         </Link>
                     ) :
                     (
-                        <a className="navbar-brand text-uppercase d-flex align-items-center" href="/">
+                        <Link to="/app/account">
                             <i className="far fa-user-circle fa-2x"></i>
-                        </a>
+                        </Link>
                     )
                     : (
-                        <a className="navbar-brand text-uppercase d-flex align-items-center" href="/">
+                        <Link to="/app/">
                             <i className="far fa-user-circle fa-2x"></i>
-                        </a>
+                        </Link>
                     )
                     
                     }

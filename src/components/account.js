@@ -1,14 +1,14 @@
 import React, { useEffect, useState, useRef, useContext } from "react"
 import { navigate } from 'gatsby'
 import { getUser, updateUser } from "../services/auth"
-import { updateDBUser } from "../services/user"
+import { updateDBUser, getDBUser } from "../services/user"
 import { uploadFile } from '../services/storage'
 import NavBar from '../components/nav-bar'
 import { rounded10 } from '../pages/styles.module.css'
 import { FirebaseContext } from "../services/firebase-provider"
 
 const Account = ({location}) => {
-    const { authToken, user } = useContext(FirebaseContext)
+    const { authToken, user, setUser } = useContext(FirebaseContext)
     const [isLoading, setIsLoading] = useState(false)
     const [isUploading, setIsUploading] = useState(false)
     const [isSuccess, setIsSuccess] = useState(false)
@@ -43,6 +43,11 @@ const Account = ({location}) => {
                 photoURL: link,
                 updatedAt: new Date().toUTCString()
             })
+            const result = await getDBUser(user.uid)
+            if (result.exists){
+            	setUser(result.data())
+            }
+            setProfilePicture('')
             setIsUploading(false)
         }
         catch(error){
